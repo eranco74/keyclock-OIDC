@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Status</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        .status {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        .token {
+            font-family: monospace;
+            background-color: #e8e8e8;
+            padding: 10px;
+            border-radius: 4px;
+            display: block;
+            word-wrap: break-word;
+            max-width: 100%;
+            overflow-wrap: break-word;
+            cursor: pointer;
+        }
+        .token:hover {
+            background-color: #d8d8d8;
+        }
+        .copy-btn {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .copy-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>RHELAI Login Status</h2>
+        <div class="status">{{ token_status }}</div>
+        {% if auth_token %}
+            <div class='token' id='authToken'>{{ auth_token }}</div>
+            <button class='copy-btn' onclick='copyToken()'>Copy Token</button>
+        {% endif %}
+    </div>
+    <script>
+        function copyToken() {
+            const tokenElement = document.getElementById("authToken");
+            const range = document.createRange();
+            range.selectNode(tokenElement);
+            window.getSelection().removeAllRanges();
+            window.getSelection().addRange(range);
+            document.execCommand("copy");
+            window.getSelection().removeAllRanges();
+            alert("Auth Token copied to clipboard!");
+        }
+    </script>
+</body>
+</html>
+

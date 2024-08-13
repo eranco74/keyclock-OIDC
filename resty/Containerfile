@@ -1,0 +1,5 @@
+FROM openresty/openresty:alpine-fat
+COPY nginx.conf /usr/local/openresty/nginx/conf/nginx.conf
+COPY auth.lua /usr/local/openresty/auth.lua
+COPY callback.lua /usr/local/openresty/callback.lua
+RUN /usr/local/openresty/luajit/bin/luarocks install lua-resty-openidc

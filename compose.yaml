@@ -1,0 +1,36 @@
+iversion: '3.7'
+
+services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:25.0.2
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./output/realm.json:/opt/keycloak/data/import/realm.json:ro,Z
+    command: start-dev --import-realm
+    container_name: keycloak
+
+  app:
+    build:
+      context: ./app
+      dockerfile: Containerfile
+    ports:
+      - "3000:3000"
+    container_name: app
+
+  nginx:
+    build:
+      context: resty
+      dockerfile: Containerfile
+    ports:
+      - "8000:80"
+    volumes:
+      - ./output/nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf:rw,Z
+      - ./output/auth.lua:/usr/local/openresty/auth.lua:ro,Z
+      - ./output/callback.lua:/usr/local/openresty/callback.lua:ro,Z
+    container_name: nginx
+    restart: always
+
